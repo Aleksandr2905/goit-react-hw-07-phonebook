@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 import style from './Form.module.css';
 
 export const Form = ({ handleAddContact }) => {
-  const [formData, setFormData] = useState({ name: '', number: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '' });
 
   const handleChange = event => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -12,10 +11,10 @@ export const Form = ({ handleAddContact }) => {
   const handleSubmit = event => {
     event.preventDefault();
     handleAddContact(formData);
-    setFormData({ name: '', number: '' });
+    setFormData({ name: '', phone: '' });
   };
 
-  const { name, number } = formData;
+  const { name, phone } = formData;
 
   return (
     <form className={style.form} onSubmit={handleSubmit}>
@@ -23,7 +22,6 @@ export const Form = ({ handleAddContact }) => {
         <span className={style.spanText}>Name</span>
         <input
           className={style.inputForm}
-          id={nanoid()}
           onChange={handleChange}
           type="text"
           name="name"
@@ -36,13 +34,12 @@ export const Form = ({ handleAddContact }) => {
         <span className={style.spanText}>Number</span>
         <input
           className={style.inputForm}
-          id={nanoid()}
           onChange={handleChange}
           type="tel"
-          name="number"
+          name="phone"
           required
           placeholder="111-22-33"
-          value={number}
+          value={phone}
         />
       </label>
       <button className={style.formBtn} type="submit">

@@ -1,49 +1,59 @@
 import { Form } from './Form/Form';
-import { nanoid } from 'nanoid';
 import { Contact } from './Contact/Contact';
 import { Filter } from './Filter/Filter';
 import style from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, changeFilter, deleteContact } from './redux/phonebookReducer';
+import {
+  changeFilter,
+  fetchAddContacts,
+  fetchContacts,
+  fetchDeleteContacts,
+} from './redux/phonebookReducer';
+import { useEffect } from 'react';
 
 export const App = () => {
-  const contacts = useSelector((state) => state.phonebook.contacts);
-  const filter = useSelector((state) => state.phonebook.filter);
+  const contacts = useSelector(state => state.phonebook.contacts);
+  const filter = useSelector(state => state.phonebook.filter);
+  const isLoading = useSelector(state => state.phonebook.isLoading);
+  const error = useSelector(state => state.phonebook.error);
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-  const handleAddContact = data => {
-    const { name, number } = data;
-    if (
-      contacts.find(
-        contact => contact.name === name && contact.number === number
-      )
-    ) {
+  const handleAddContact = ({ name, phone }) => {
+    const hasDuplicateContacts = contacts.find(
+      contact => contact.name === name && contact.phone === phone
+    );
+
+    if (hasDuplicateContacts) {
       alert(`${name} is already in contacts.`);
       return;
     }
-    dispatch(addContact({
-      id: nanoid(),
-      name,
-      number,
-    })
-    )
+
+    dispatch(
+      fetchAddContacts({
+        name,
+        phone,
+      })
+    );
   };
 
   const handleFilterChange = event => {
     const inputFilter = event.target.value;
-    dispatch(changeFilter(inputFilter))
+    dispatch(changeFilter(inputFilter));
   };
 
   const handleDeleteContact = contactId => {
-    dispatch(deleteContact(contactId))
+    dispatch(fetchDeleteContacts(contactId));
   };
 
   const filterContacts = contacts.filter(contact => {
     return (
       contact.name.toLowerCase().includes(filter.trim().toLowerCase()) ||
-      contact.number.includes(filter)
+      contact.phone.includes(filter)
     );
   });
 
@@ -56,6 +66,8 @@ export const App = () => {
       <Contact
         contacts={filterContacts}
         handleDeleteContact={handleDeleteContact}
+        isLoading={isLoading}
+        error={error}
       />
     </div>
   );
