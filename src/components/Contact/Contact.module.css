@@ -1,12 +1,17 @@
 .contactTitle {
   padding-left: 10px;
+  margin-top: 20px;
 }
 
 .contactItem {
   font-size: 24px;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+}
+
+.contactPhone {
+  margin-left: auto;
 }
 
 .btnDelete {
@@ -14,7 +19,9 @@
   height: 36px;
   font-size: 12px;
   letter-spacing: 0.07em;
-  margin-left: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 40px;
   padding: 10px;
   cursor: pointer;
   border-radius: 4px;
