@@ -63,12 +63,17 @@ export const App = () => {
       <Form handleAddContact={handleAddContact} />
       <h2 className={style.titleContact}>Contacts</h2>
       <Filter onChange={handleFilterChange} value={filter} />
-      <Contact
-        contacts={filterContacts}
-        handleDeleteContact={handleDeleteContact}
-        isLoading={isLoading}
-        error={error}
-      />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          {error && <div>{error}</div>}
+          <Contact
+            contacts={filterContacts}
+            handleDeleteContact={handleDeleteContact}
+          />
+        </>
+      )}
     </div>
   );
 };
